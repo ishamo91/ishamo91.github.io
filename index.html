@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Ahtesham Aslam</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Ahtesham Aslam: game developer working in UEFN and Unreal Engine 5. Fortnite maps, gameplay systems and a UE5 wave-survival shooter.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Chakra+Petch:wght@500;600&family=Instrument+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a dark "editor viewport" page. Hero = name + live reel; projects read like level cards with a HUD stat strip. */
+:root {
+  --bg: #0d1219;          /* editor slate */
+  --surface: #151d27;
+  --line: #263240;
+  --fg: #e8edf3;
+  --muted: #93a1b2;
+  --amber: #ffb627;       /* HUD ammo / confirm yellow */
+  --pink: #ff4d8d;        /* round counter pink */
+  --on-amber: #1a1204;
+  --display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --hud: "Chakra Petch", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #eef1f5; --surface: #ffffff; --line: #d3dae3; --fg: #111821; --muted: #556275;
+    --amber: #a86400; --pink: #c8195a; --on-amber: #ffffff; color-scheme: light;
+  }
+}
+:root[data-theme="light"] {
+  --bg: #eef1f5; --surface: #ffffff; --line: #d3dae3; --fg: #111821; --muted: #556275;
+  --amber: #a86400; --pink: #c8195a; --on-amber: #ffffff; color-scheme: light;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font: 400 1rem/1.6 var(--body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+
+.wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- top bar ---------- */
+.bar { border-bottom: 1px solid var(--line); }
+.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
+.mark { font: 600 0.8rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; }
+.mark span { color: var(--amber); }
+.bar nav { display: flex; gap: 20px; flex-wrap: wrap; }
+.bar nav a { font: 500 0.82rem/1 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
+.bar nav a:hover { color: var(--fg); }
+
+/* ---------- hero ---------- */
+.hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 48px; align-items: center; padding-block: 64px 56px; }
+.eyebrow { font: 600 0.78rem/1 var(--hud); letter-spacing: 0.16em; text-transform: uppercase; color: var(--amber); margin: 0 0 18px; }
+h1 {
+  font: 800 clamp(3rem, 7.4vw, 5.6rem)/0.92 var(--display);
+  letter-spacing: -0.035em;
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+.lede { font-size: 1.12rem; color: var(--muted); max-width: 34ch; margin: 0 0 28px; }
+.lede strong { color: var(--fg); font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 600 0.86rem/1 var(--hud); letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 13px 18px; border: 1px solid var(--line); background: transparent; color: var(--fg);
+  text-decoration: none; cursor: pointer; border-radius: 3px;
+}
+.btn:hover { border-color: var(--fg); }
+.btn.primary { background: var(--amber); color: var(--on-amber); border-color: var(--amber); }
+.btn.primary:hover { filter: brightness(1.08); }
+
+.reel { position: relative; margin: 0; }
+.reel video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--surface); border-radius: 4px; }
+.reel figcaption {
+  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  font: 500 0.74rem/1.3 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+  padding-top: 10px;
+}
+.reel .rec { color: var(--pink); }
+.reel .rec::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--pink); margin-right: 7px; vertical-align: 1px; animation: blink 1.6s steps(2, start) infinite; }
+@keyframes blink { to { visibility: hidden; } }
+@media (prefers-reduced-motion: reduce) { .reel .rec::before { animation: none; } }
+
+/* ---------- loadout strip ---------- */
+.loadout { border-block: 1px solid var(--line); }
+.loadout .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: 0; }
+.slot { padding: 18px 18px 18px 0; display: grid; gap: 4px; }
+.slot + .slot { padding-left: 18px; border-left: 1px solid var(--line); }
+.slot b { font: 800 1.9rem/1 var(--display); font-variant-numeric: tabular-nums; }
+.slot span { font: 500 0.74rem/1.3 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- sections ---------- */
+section.block .wrap { padding-block: 80px 24px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
+h2 { font: 800 clamp(2rem, 4.4vw, 3rem)/1 var(--display); letter-spacing: -0.03em; margin: 0; text-wrap: balance; }
+.sec-head p { margin: 0; color: var(--muted); max-width: 46ch; }
+
+/* ---------- projects ---------- */
+.projects { display: grid; gap: 88px; }
+.project { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: start; }
+.project:nth-child(even) .media { order: 2; }
+.media { margin: 0; min-width: 0; }
+.media video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; background: var(--surface); border-radius: 4px; object-fit: contain; }
+.info { min-width: 0; }
+.tag { font: 600 0.74rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); margin: 0 0 12px; }
+h3 { font: 800 clamp(1.6rem, 3vw, 2.15rem)/1.02 var(--display); letter-spacing: -0.025em; margin: 0 0 14px; text-wrap: balance; }
+.info > p { margin: 0 0 18px; color: var(--muted); }
+.hud {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  border: 1px solid var(--line); border-radius: 3px; margin: 0 0 20px;
+}
+.hud div { padding: 10px 12px; min-width: 0; }
+.hud div + div { border-left: 1px solid var(--line); }
+.hud dt { font: 500 0.66rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.hud dd { margin: 0; font: 600 0.88rem/1.25 var(--hud); font-variant-numeric: tabular-nums; }
+.feats { list-style: none; margin: 0 0 22px; padding: 0; display: grid; gap: 8px; }
+.feats li { padding-left: 20px; position: relative; }
+.feats li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 8px; height: 8px; background: var(--amber); transform: rotate(45deg); }
+.feats b { font-weight: 600; }
+.repo { font: 600 0.82rem/1 var(--hud); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
+.repo:hover { color: var(--fg); }
+
+/* ---------- more work ---------- */
+.more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+.more a { display: grid; gap: 6px; padding: 22px 22px 22px 0; text-decoration: none; border-bottom: 1px solid var(--line); min-width: 0; }
+.more a:nth-child(even) { padding-left: 22px; border-left: 1px solid var(--line); }
+.more strong { font: 800 1.3rem/1.1 var(--display); letter-spacing: -0.015em; }
+.more span { color: var(--muted); font-size: 0.95rem; }
+.more em { font: 500 0.7rem/1 var(--hud); font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pink); }
+.more a:hover strong { color: var(--amber); }
+
+/* ---------- skills + education ---------- */
+.two { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 56px; }
+.skills { display: grid; gap: 22px; margin: 0; }
+.skills dt { font: 600 0.74rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
+.skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { border: 1px solid var(--line); padding: 6px 11px; border-radius: 3px; font-size: 0.92rem; }
+.edu { border: 1px solid var(--line); border-radius: 4px; padding: 24px; background: var(--surface); }
+.edu h3 { font-size: 1.5rem; margin-bottom: 6px; }
+.edu p { margin: 0 0 4px; color: var(--muted); }
+.edu .when { font: 600 0.8rem/1 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg); margin-top: 14px; }
+
+/* ---------- contact ---------- */
+.contact .wrap { padding-block: 96px 72px; }
+.contact h2 { font-size: clamp(2.4rem, 6vw, 4.2rem); max-width: 14ch; margin-bottom: 20px; }
+.contact p { color: var(--muted); max-width: 52ch; margin: 0 0 28px; }
+.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 18px; }
+.mail code { font: 600 clamp(1rem, 2.6vw, 1.35rem)/1.2 var(--hud); padding: 12px 16px; border: 1px solid var(--line); border-radius: 3px; user-select: all; overflow-wrap: anywhere; }
+.copied { font: 500 0.78rem/1 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); min-height: 1em; }
+footer .wrap { border-top: 1px solid var(--line); padding-block: 22px 32px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 500 0.76rem/1.4 var(--hud); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+/* ---------- responsive ---------- */
+@media (max-width: 880px) {
+  .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 40px; }
+  .project { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .project:nth-child(even) .media { order: 0; }
+  .two { grid-template-columns: minmax(0, 1fr); gap: 40px; }
+  .loadout .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .slot:nth-child(3) { padding-left: 0; border-left: 0; }
+  .slot:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+  .bar nav { gap: 14px; }
+  .more { grid-template-columns: minmax(0, 1fr); }
+  .more a:nth-child(even) { padding-left: 0; border-left: 0; }
+  .hud div { padding: 9px 8px; }
+  .hud dd { font-size: 0.8rem; overflow-wrap: anywhere; }
+  section.block .wrap { padding-block: 56px 16px; }
+}
+</style>
+
+</head>
+<body>
+<header class="bar">
+  <div class="wrap">
+    <a class="mark" href="#top">Ahtesham<span>.</span>dev</a>
+    <nav aria-label="Sections">
+      <a href="#work">Work</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Game developer · UEFN &amp; Unreal Engine 5</p>
+        <h1>Ahtesham Aslam</h1>
+        <p class="lede">I build <strong>Fortnite islands in UEFN</strong> and <strong>gameplay systems in Unreal Engine 5</strong>: competitive maps, player-facing settings, wave combat and the UI that ties it together.</p>
+        <div class="actions">
+          <a class="btn primary" href="#work">See projects</a>
+          <a class="btn" href="https://github.com/ishamo91" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn" href="https://www.linkedin.com/in/ahtesham-aslam-b00544360/" target="_blank" rel="noopener">LinkedIn</a>
+        </div>
+      </div>
+      <figure class="reel">
+        <video src="media/reel.mp4" poster="media/reel.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Showreel: clips from four projects"></video>
+        <figcaption><span class="rec">Showreel</span><span>Dead Man's Dock · 1v1 Map · Cup Zone Wars · Bot Practice</span></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="loadout" aria-label="At a glance">
+    <div class="wrap">
+      <div class="slot"><b>4</b><span>Featured projects</span></div>
+      <div class="slot"><b>3</b><span>UEFN islands</span></div>
+      <div class="slot"><b>10</b><span>Waves in Dead Man's Dock</span></div>
+      <div class="slot"><b>2028</b><span>BS Games Dev, Air Uni</span></div>
+    </div>
+  </div>
+
+  <section class="block" id="work">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>Projects</h2>
+        <p>Each one has its own GitHub repo with a write-up and the full demo video.</p>
+      </div>
+
+      <div class="projects">
+        <article class="project">
+          <figure class="media">
+            <video src="media/dead-mans-dock.mp4" poster="media/dead-mans-dock-hero.jpg" controls playsinline preload="none" aria-label="Dead Man's Dock gameplay video"></video>
+          </figure>
+          <div class="info">
+            <p class="tag">Unreal Engine 5 · Wave survival FPS</p>
+            <h3>Dead Man's Dock</h3>
+            <p>Hold a pirate dock on a tropical island against ten waves of skeletons. Kills earn coins, and the shop opens between waves.</p>
+            <dl class="hud">
+              <div><dt>Engine</dt><dd>UE5</dd></div>
+              <div><dt>Waves</dt><dd>10</dd></div>
+              <div><dt>Demo</dt><dd>1:18</dd></div>
+            </dl>
+            <ul class="feats">
+              <li><b>Wave director</b> with growing enemy counts, a "Skeletons Left" tracker and a countdown between waves</li>
+              <li><b>Skeleton AI</b> that paths across beach and dock, with health bars</li>
+              <li><b>Coin economy</b> and an in-game shop on the B key</li>
+              <li><b>Menus and options:</b> Play, Options and Quit, plus graphics settings from Low to Ultra</li>
+            </ul>
+            <a class="repo" href="https://github.com/ishamo91/Dead-Mans-Dock" target="_blank" rel="noopener">View repo →</a>
+          </div>
+        </article>
+
+        <article class="project">
+          <figure class="media">
+            <video src="media/uefn-customizable-1v1-map.mp4" poster="media/uefn-customizable-1v1-map.jpg" controls playsinline preload="none" aria-label="Customizable 1v1 map gameplay video"></video>
+          </figure>
+          <div class="info">
+            <p class="tag">UEFN · Solo project</p>
+            <h3>Customizable 1v1 Build Fight Map</h3>
+            <p>A 1v1 map where players set up the whole match in-world, so they never open an island menu.</p>
+            <dl class="hud">
+              <div><dt>Engine</dt><dd>UEFN</dd></div>
+              <div><dt>HP presets</dt><dd>200/180/165</dd></div>
+              <div><dt>Demo</dt><dd>0:48</dd></div>
+            </dl>
+            <ul class="feats">
+              <li><b>Custom crosshair editor:</b> 12 styles, size, a color spectrum, presets, Random and Reset</li>
+              <li><b>Health and shield presets</b> with fine-tune sliders</li>
+              <li><b>Sky switcher, loadout wall</b> and a live round score tracker</li>
+            </ul>
+            <a class="repo" href="https://github.com/ishamo91/UEFN-Customizable-1v1-Map" target="_blank" rel="noopener">View repo →</a>
+          </div>
+        </article>
+
+        <article class="project">
+          <figure class="media">
+            <video src="media/uefn-cup-zone-wars.mp4" poster="media/uefn-cup-zone-wars.jpg" controls playsinline preload="none" aria-label="Cup Zone Wars gameplay video"></video>
+          </figure>
+          <div class="info">
+            <p class="tag">UEFN · Competitive</p>
+            <h3>Cup Zone Wars</h3>
+            <p>A zone wars experience built around a lobby hub, with cup points, a gold economy and trophies across rounds.</p>
+            <dl class="hud">
+              <div><dt>Engine</dt><dd>UEFN</dd></div>
+              <div><dt>Trophy at</dt><dd>Round 10</dd></div>
+              <div><dt>Demo</dt><dd>0:23</dd></div>
+            </dl>
+            <ul class="feats">
+              <li><b>Live leaderboard</b> and cup points for wins, placements and eliminations</li>
+              <li><b>Gold economy:</b> +5 per Victory Royale, +1 per elimination, +1 per minute</li>
+              <li><b>Loadout board</b> with a dice button that randomizes your loadout</li>
+            </ul>
+            <a class="repo" href="https://github.com/ishamo91/UEFN-Cup-Zone-Wars" target="_blank" rel="noopener">View repo →</a>
+          </div>
+        </article>
+
+        <article class="project">
+          <figure class="media">
+            <video src="media/uefn-1v1-bot-practice-map.mp4" poster="media/uefn-1v1-bot-practice-map.jpg" controls playsinline preload="none" aria-label="1v1 bot practice map gameplay video"></video>
+          </figure>
+          <div class="info">
+            <p class="tag">UEFN · Practice</p>
+            <h3>1v1 Bot Practice Map</h3>
+            <p>A solo practice island: fight a bot, swap outfits on the spot and run timed build courses.</p>
+            <dl class="hud">
+              <div><dt>Engine</dt><dd>UEFN</dd></div>
+              <div><dt>Opponent</dt><dd>AI bot</dd></div>
+              <div><dt>Demo</dt><dd>0:50</dd></div>
+            </dl>
+            <ul class="feats">
+              <li><b>1v1 Bot spawner</b> for solo build-fight practice</li>
+              <li><b>Outfit changer booth</b> that opens the locker mid-session</li>
+              <li><b>Run course</b> with a counter, a build area and build reset</li>
+            </ul>
+            <a class="repo" href="https://github.com/ishamo91/UEFN-1v1-Bot-Practice-Map" target="_blank" rel="noopener">View repo →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="more">
+    <div class="wrap">
+      <div class="sec-head">
+        <h2>More on GitHub</h2>
+        <p>Earlier engine and C++ work.</p>
+      </div>
+      <div class="more">
+        <a href="https://github.com/ishamo91/PrismFall" target="_blank" rel="noopener"><em>C++ · SFML</em><strong>PrismFall</strong><span>A Mastermind-style puzzle game with menus, difficulty modes, sound and undo built on a stack.</span></a>
+        <a href="https://github.com/ishamo91/EnemyAI" target="_blank" rel="noopener"><em>Unreal Engine 5</em><strong>EnemyAI</strong><span>Enemy AI with waypoint patrols, plus a main menu and lose screen.</span></a>
+        <a href="https://github.com/ishamo91/Pirate-Defense-Game" target="_blank" rel="noopener"><em>Unreal Engine 5.5</em><strong>Pirate Defense Game</strong><span>An early first-person prototype in Unreal Engine 5.5.</span></a>
+        <a href="https://github.com/ishamo91/Level_Design" target="_blank" rel="noopener"><em>Unreal Engine 5</em><strong>Level Design</strong><span>Level design practice project.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="skills">
+    <div class="wrap two">
+      <div>
+        <div class="sec-head"><h2>Skills</h2></div>
+        <dl class="skills">
+          <div><dt>Engines</dt><dd><span class="chip">Unreal Engine 5</span><span class="chip">UEFN</span><span class="chip">Fortnite Creative</span></dd></div>
+          <div><dt>Programming</dt><dd><span class="chip">C++</span><span class="chip">Blueprints</span><span class="chip">SFML</span><span class="chip">Git &amp; GitHub</span></dd></div>
+          <div><dt>Gameplay &amp; UI</dt><dd><span class="chip">Wave &amp; round systems</span><span class="chip">Enemy AI</span><span class="chip">In-game economies</span><span class="chip">Leaderboards</span><span class="chip">UMG menus &amp; HUD</span><span class="chip">Player settings UI</span></dd></div>
+          <div><dt>Design</dt><dd><span class="chip">Competitive map layout</span><span class="chip">Level design</span><span class="chip">Playtesting</span></dd></div>
+        </dl>
+      </div>
+      <div>
+        <div class="sec-head"><h2>Education</h2></div>
+        <div class="edu">
+          <h3>Air University, Islamabad</h3>
+          <p>Bachelor's in Computer Games Development</p>
+          <p class="when">Sep 2024 – Sep 2028 (expected)</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <h2>Need a map or a gameplay system built?</h2>
+      <p>I'm open to UEFN commissions, Unreal Engine work and internships. Email is the fastest way to reach me.</p>
+      <div class="mail">
+        <code id="email">ahteshamaslam134@gmail.com</code>
+        <button class="btn primary" type="button" id="copy-email">Copy email</button>
+        <span class="copied" id="copy-status" aria-live="polite"></span>
+      </div>
+      <div class="actions">
+        <a class="btn" href="https://github.com/ishamo91" target="_blank" rel="noopener">github.com/ishamo91</a>
+        <a class="btn" href="https://www.linkedin.com/in/ahtesham-aslam-b00544360/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Ahtesham Aslam</span>
+    <span>Islamabad, Pakistan</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var btn = document.getElementById('copy-email');
+  var out = document.getElementById('copy-status');
+  var email = document.getElementById('email');
+  function selectIt() {
+    var r = document.createRange(); r.selectNodeContents(email);
+    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  }
+  btn.addEventListener('click', function () {
+    var text = email.textContent.trim();
+    try {
+      navigator.clipboard.writeText(text).then(function () { out.textContent = 'Copied'; }, function () { selectIt(); out.textContent = 'Selected, press Ctrl+C'; });
+    } catch (e) { selectIt(); out.textContent = 'Selected, press Ctrl+C'; }
+  });
+  // Pause other project videos when one starts playing
+  var vids = document.querySelectorAll('.media video');
+  vids.forEach(function (v) {
+    v.addEventListener('play', function () { vids.forEach(function (o) { if (o !== v) o.pause(); }); });
+  });
+  // Respect reduced motion for the hero reel
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var reel = document.querySelector('.reel video'); if (reel) { reel.removeAttribute('autoplay'); reel.pause(); reel.controls = true; }
+  }
+})();
+</script>
+
+</body>
+</html>
