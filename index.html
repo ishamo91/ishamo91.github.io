@@ -3,418 +3,618 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}[hidden]{display:none!important}</style>
 <title>Ahtesham Aslam</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Ahtesham Aslam: game developer working in UEFN and Unreal Engine 5. Fortnite maps, gameplay systems and a UE5 wave-survival shooter.">
+<meta name="description" content="Ahtesham Aslam builds Fortnite islands in UEFN and gameplay systems in Unreal Engine 5.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Chakra+Petch:wght@500;600&family=Instrument+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Hanken+Grotesk:wght@400;500;600&display=swap">
 <style>
-/* Layout: a dark "editor viewport" page. Hero = name + live reel; projects read like level cards with a HUD stat strip. */
+/* Layout: "storm night" level-select. Giant condensed name, a showreel that opens to full screen on scroll,
+   then a stacked list of project titles that play their footage in a floating viewport. Case studies live on #routes.
+   One look on purpose: always dark, like a game's front end. */
 :root {
-  --bg: #0d1219;          /* editor slate */
-  --surface: #151d27;
-  --line: #263240;
-  --fg: #e8edf3;
-  --muted: #93a1b2;
-  --amber: #ffb627;       /* HUD ammo / confirm yellow */
-  --pink: #ff4d8d;        /* round counter pink */
-  --on-amber: #1a1204;
-  --display: "Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
-  --body: "Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --hud: "Chakra Petch", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --night: #120d1f;     /* storm night */
+  --deep: #1b1530;      /* raised surface */
+  --line: #2f2849;      /* rules */
+  --ink: #f4efe6;       /* warm white */
+  --dim: #a9a2bd;       /* lavender grey */
+  --storm: #ff5bc6;     /* storm magenta from the zone wars sky */
+  --tide: #45e3d2;      /* lagoon turquoise from Dead Man's Dock */
+  --display: "Big Shoulders Display", "Oswald", "Arial Narrow", Impact, sans-serif;
+  --body: "Hanken Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --gutter-r: max(16px, env(safe-area-inset-right, 0px));
   color-scheme: dark;
 }
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    --bg: #eef1f5; --surface: #ffffff; --line: #d3dae3; --fg: #111821; --muted: #556275;
-    --amber: #a86400; --pink: #c8195a; --on-amber: #ffffff; color-scheme: light;
-  }
-}
-:root[data-theme="light"] {
-  --bg: #eef1f5; --surface: #ffffff; --line: #d3dae3; --fg: #111821; --muted: #556275;
-  --amber: #a86400; --pink: #c8195a; --on-amber: #ffffff; color-scheme: light;
-}
-
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+html { background: var(--night); }
 body {
-  margin: 0;
-  background: var(--bg);
-  color: var(--fg);
-  font: 400 1rem/1.6 var(--body);
-  -webkit-font-smoothing: antialiased;
+  margin: 0; background: var(--night); color: var(--ink);
+  font: 400 1.0625rem/1.6 var(--body);
+  -webkit-font-smoothing: antialiased; overflow-x: hidden;
 }
 a { color: inherit; }
-:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 2px; }
+img, video { max-width: 100%; display: block; }
+:focus-visible { outline: 2px solid var(--tide); outline-offset: 4px; border-radius: 2px; }
+::selection { background: var(--storm); color: var(--night); }
 
-.wrap {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding-left: max(16px, env(safe-area-inset-left, 0px));
-  padding-right: max(16px, env(safe-area-inset-right, 0px));
+.wrap { max-width: 1320px; margin: 0 auto; padding-left: calc(var(--gutter) + 1.5vw); padding-right: calc(var(--gutter-r) + 1.5vw); }
+
+/* ---------- nav ---------- */
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--night); z-index: 30; }
+.nav {
+  position: fixed; top: env(safe-area-inset-top, 0px); left: 0; right: 0; z-index: 20; color: var(--ink);
+  background: linear-gradient(to bottom, rgba(18, 13, 31, 0.92) 0%, rgba(18, 13, 31, 0.6) 60%, rgba(18, 13, 31, 0) 100%);
 }
-
-/* ---------- top bar ---------- */
-.bar { border-bottom: 1px solid var(--line); }
-.bar .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 14px; flex-wrap: wrap; }
-.mark { font: 600 0.8rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; text-decoration: none; }
-.mark span { color: var(--amber); }
-.bar nav { display: flex; gap: 20px; flex-wrap: wrap; }
-.bar nav a { font: 500 0.82rem/1 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-decoration: none; }
-.bar nav a:hover { color: var(--fg); }
+.nav .wrap { display: flex; justify-content: space-between; align-items: center; padding-block: 20px; }
+.nav a { text-decoration: none; font-weight: 600; font-size: 0.95rem; }
+.nav nav { display: flex; gap: clamp(16px, 3vw, 36px); }
+.nav nav a { opacity: 0.85; }
+.nav nav a:hover { opacity: 1; text-decoration: underline; text-underline-offset: 5px; }
 
 /* ---------- hero ---------- */
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 48px; align-items: center; padding-block: 64px 56px; }
-.eyebrow { font: 600 0.78rem/1 var(--hud); letter-spacing: 0.16em; text-transform: uppercase; color: var(--amber); margin: 0 0 18px; }
-h1 {
-  font: 800 clamp(3rem, 7.4vw, 5.6rem)/0.92 var(--display);
-  letter-spacing: -0.035em;
-  margin: 0 0 22px;
-  text-wrap: balance;
+.hero { position: relative; }
+.stage { min-height: 100vh; padding-top: 96px; display: flex; flex-direction: column; justify-content: flex-start; }
+.hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: 32px; align-items: end; padding-bottom: 28px; }
+h1.name {
+  font: 900 clamp(4.6rem, 15.5vw, 15rem)/0.8 var(--display);
+  text-transform: uppercase; letter-spacing: -0.01em; margin: 0;
 }
-.lede { font-size: 1.12rem; color: var(--muted); max-width: 34ch; margin: 0 0 28px; }
-.lede strong { color: var(--fg); font-weight: 600; }
-.actions { display: flex; flex-wrap: wrap; gap: 10px; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  font: 600 0.86rem/1 var(--hud); letter-spacing: 0.08em; text-transform: uppercase;
-  padding: 13px 18px; border: 1px solid var(--line); background: transparent; color: var(--fg);
-  text-decoration: none; cursor: pointer; border-radius: 3px;
+h1.name .line { display: block; overflow: hidden; padding-bottom: 0.04em; white-space: nowrap; }
+h1.name .ch { display: inline-block; will-change: transform; }
+h1.name .line:last-child { color: transparent; -webkit-text-stroke: 2px var(--ink); }
+.intro { margin: 0 0 0.6em; font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--dim); max-width: 22rem; }
+.intro strong { color: var(--ink); font-weight: 600; }
+.reel { margin: 0; position: relative; padding-left: calc(var(--gutter) + 1.5vw); padding-right: calc(var(--gutter-r) + 1.5vw); }
+.reel-frame { position: relative; overflow: hidden; border-radius: 10px; background: var(--deep); }
+.reel video { width: 100%; aspect-ratio: 16 / 9; max-height: 82vh; object-fit: cover; }
+.reel-cap {
+  position: absolute; left: 0; right: 0; bottom: 0; display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  padding: 18px 22px; font-size: 0.95rem; color: var(--ink);
+  background: linear-gradient(to top, rgba(18, 13, 31, 0.75), rgba(18, 13, 31, 0));
 }
-.btn:hover { border-color: var(--fg); }
-.btn.primary { background: var(--amber); color: var(--on-amber); border-color: var(--amber); }
-.btn.primary:hover { filter: brightness(1.08); }
+.reel-cap span:first-child::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--storm); margin-right: 9px; vertical-align: 1px; }
+.js-pin .reel { padding: 0; }
+.js-pin .reel-frame { border-radius: 0; }
+.js-pin .reel video { max-height: none; height: 100vh; aspect-ratio: auto; }
 
-.reel { position: relative; margin: 0; }
-.reel video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; object-fit: cover; background: var(--surface); border-radius: 4px; }
-.reel figcaption {
-  display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
-  font: 500 0.74rem/1.3 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
-  padding-top: 10px;
+/* ---------- facts strip ---------- */
+.facts { border-bottom: 1px solid var(--line); }
+.facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.fact { padding: 30px 20px 30px 0; display: grid; gap: 2px; }
+.fact + .fact { padding-left: 20px; border-left: 1px solid var(--line); }
+.fact b { font: 900 clamp(2.4rem, 4.5vw, 3.6rem)/1 var(--display); font-variant-numeric: tabular-nums; }
+.fact span { color: var(--dim); font-size: 0.95rem; }
+
+/* ---------- section heads ---------- */
+.sec { padding-block: clamp(72px, 10vw, 140px) 0; }
+.sec-head { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: 24px; align-items: end; margin-bottom: 36px; }
+h2 { font: 900 clamp(2.8rem, 7vw, 6rem)/0.9 var(--display); text-transform: uppercase; margin: 0; }
+.sec-head p { margin: 0; color: var(--dim); }
+
+/* ---------- level select ---------- */
+.levels { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.levels li { border-bottom: 1px solid var(--line); }
+.level {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 24px; align-items: center;
+  padding: clamp(18px, 2.4vw, 30px) 0; text-decoration: none; position: relative;
 }
-.reel .rec { color: var(--pink); }
-.reel .rec::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--pink); margin-right: 7px; vertical-align: 1px; animation: blink 1.6s steps(2, start) infinite; }
-@keyframes blink { to { visibility: hidden; } }
-@media (prefers-reduced-motion: reduce) { .reel .rec::before { animation: none; } }
-
-/* ---------- loadout strip ---------- */
-.loadout { border-block: 1px solid var(--line); }
-.loadout .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: 0; }
-.slot { padding: 18px 18px 18px 0; display: grid; gap: 4px; }
-.slot + .slot { padding-left: 18px; border-left: 1px solid var(--line); }
-.slot b { font: 800 1.9rem/1 var(--display); font-variant-numeric: tabular-nums; }
-.slot span { font: 500 0.74rem/1.3 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); }
-
-/* ---------- sections ---------- */
-section.block .wrap { padding-block: 80px 24px; }
-.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 40px; }
-h2 { font: 800 clamp(2rem, 4.4vw, 3rem)/1 var(--display); letter-spacing: -0.03em; margin: 0; text-wrap: balance; }
-.sec-head p { margin: 0; color: var(--muted); max-width: 46ch; }
-
-/* ---------- projects ---------- */
-.projects { display: grid; gap: 88px; }
-.project { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 40px; align-items: start; }
-.project:nth-child(even) .media { order: 2; }
-.media { margin: 0; min-width: 0; }
-.media video { display: block; width: 100%; max-width: 100%; aspect-ratio: 16 / 9; background: var(--surface); border-radius: 4px; object-fit: contain; }
-.info { min-width: 0; }
-.tag { font: 600 0.74rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink); margin: 0 0 12px; }
-h3 { font: 800 clamp(1.6rem, 3vw, 2.15rem)/1.02 var(--display); letter-spacing: -0.025em; margin: 0 0 14px; text-wrap: balance; }
-.info > p { margin: 0 0 18px; color: var(--muted); }
-.hud {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
-  border: 1px solid var(--line); border-radius: 3px; margin: 0 0 20px;
+.level .t {
+  font: 900 clamp(2.4rem, 7.4vw, 6.6rem)/0.92 var(--display); text-transform: uppercase;
+  transition: color 0.25s ease, transform 0.35s cubic-bezier(.2,.7,.2,1);
 }
-.hud div { padding: 10px 12px; min-width: 0; }
-.hud div + div { border-left: 1px solid var(--line); }
-.hud dt { font: 500 0.66rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
-.hud dd { margin: 0; font: 600 0.88rem/1.25 var(--hud); font-variant-numeric: tabular-nums; }
-.feats { list-style: none; margin: 0 0 22px; padding: 0; display: grid; gap: 8px; }
-.feats li { padding-left: 20px; position: relative; }
-.feats li::before { content: ""; position: absolute; left: 0; top: 0.62em; width: 8px; height: 8px; background: var(--amber); transform: rotate(45deg); }
-.feats b { font-weight: 600; }
-.repo { font: 600 0.82rem/1 var(--hud); letter-spacing: 0.08em; text-transform: uppercase; color: var(--amber); text-decoration: none; border-bottom: 1px solid currentColor; padding-bottom: 3px; }
-.repo:hover { color: var(--fg); }
+.level .m { text-align: right; color: var(--dim); font-size: 0.98rem; line-height: 1.4; }
+.level .m b { display: block; color: var(--ink); font-weight: 600; }
+.level .thumb { display: none; }
+@media (hover: hover) and (pointer: fine) {
+  .level:hover .t, .level:focus-visible .t { color: var(--storm); transform: translateX(14px); }
+  .levels:hover .level:not(:hover) .t { color: color-mix(in srgb, var(--ink) 35%, var(--night)); }
+}
 
-/* ---------- more work ---------- */
-.more { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
-.more a { display: grid; gap: 6px; padding: 22px 22px 22px 0; text-decoration: none; border-bottom: 1px solid var(--line); min-width: 0; }
-.more a:nth-child(even) { padding-left: 22px; border-left: 1px solid var(--line); }
-.more strong { font: 800 1.3rem/1.1 var(--display); letter-spacing: -0.015em; }
-.more span { color: var(--muted); font-size: 0.95rem; }
-.more em { font: 500 0.7rem/1 var(--hud); font-style: normal; letter-spacing: 0.12em; text-transform: uppercase; color: var(--pink); }
-.more a:hover strong { color: var(--amber); }
+/* floating viewport that follows the pointer over the list */
+.peek {
+  position: fixed; left: 0; top: 0; z-index: 15; width: clamp(280px, 28vw, 420px); pointer-events: none;
+  opacity: 0; scale: 0.85; transition: opacity 0.2s ease, scale 0.25s ease;
+}
+.peek.on { opacity: 1; scale: 1; }
+.peek video { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; background: var(--deep); box-shadow: 0 30px 60px -20px rgba(0, 0, 0, 0.7); }
+.peek span { display: inline-block; margin-top: 10px; padding: 6px 12px; border-radius: 999px; background: var(--storm); color: var(--night); font-weight: 600; font-size: 0.85rem; }
 
-/* ---------- skills + education ---------- */
-.two { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 56px; }
-.skills { display: grid; gap: 22px; margin: 0; }
-.skills dt { font: 600 0.74rem/1 var(--hud); letter-spacing: 0.14em; text-transform: uppercase; color: var(--amber); margin-bottom: 10px; }
-.skills dd { margin: 0; display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { border: 1px solid var(--line); padding: 6px 11px; border-radius: 3px; font-size: 0.92rem; }
-.edu { border: 1px solid var(--line); border-radius: 4px; padding: 24px; background: var(--surface); }
-.edu h3 { font-size: 1.5rem; margin-bottom: 6px; }
-.edu p { margin: 0 0 4px; color: var(--muted); }
-.edu .when { font: 600 0.8rem/1 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--fg); margin-top: 14px; }
+/* ---------- about ---------- */
+.about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px); }
+.about .lead { font-size: clamp(1.3rem, 2.2vw, 1.75rem); line-height: 1.4; margin: 0 0 24px; max-width: 30ch; }
+.about .lead em { font-style: normal; color: var(--tide); }
+.about p { color: var(--dim); max-width: 60ch; margin: 0 0 16px; }
+.kit { display: grid; gap: 22px; margin: 0; }
+.kit div { border-top: 1px solid var(--line); padding-top: 14px; display: grid; grid-template-columns: 9rem minmax(0, 1fr); gap: 16px; }
+.kit dt { font-weight: 600; }
+.kit dd { margin: 0; color: var(--dim); }
+
+/* ---------- more ---------- */
+.more { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.more a { padding: 22px 20px 26px 0; text-decoration: none; display: grid; gap: 6px; align-content: start; min-width: 0; }
+.more a + a { padding-left: 20px; border-left: 1px solid var(--line); }
+.more strong { font: 900 1.7rem/1 var(--display); text-transform: uppercase; }
+.more small { color: var(--tide); font-size: 0.85rem; }
+.more span { color: var(--dim); font-size: 0.95rem; }
+.more a:hover strong { color: var(--storm); }
 
 /* ---------- contact ---------- */
-.contact .wrap { padding-block: 96px 72px; }
-.contact h2 { font-size: clamp(2.4rem, 6vw, 4.2rem); max-width: 14ch; margin-bottom: 20px; }
-.contact p { color: var(--muted); max-width: 52ch; margin: 0 0 28px; }
-.mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 18px; }
-.mail code { font: 600 clamp(1rem, 2.6vw, 1.35rem)/1.2 var(--hud); padding: 12px 16px; border: 1px solid var(--line); border-radius: 3px; user-select: all; overflow-wrap: anywhere; }
-.copied { font: 500 0.78rem/1 var(--hud); letter-spacing: 0.1em; text-transform: uppercase; color: var(--amber); min-height: 1em; }
-footer .wrap { border-top: 1px solid var(--line); padding-block: 22px 32px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font: 500 0.76rem/1.4 var(--hud); letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+.contact { padding-block: clamp(96px, 14vw, 200px) clamp(56px, 8vw, 96px); }
+.contact h2 { font-size: clamp(3.4rem, 11vw, 10rem); max-width: 11ch; }
+.contact p { color: var(--dim); max-width: 46ch; margin: 24px 0 32px; }
+.mail { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.mail code {
+  font: 600 clamp(1.05rem, 2.6vw, 1.7rem)/1.2 var(--body); padding: 14px 20px; border: 1px solid var(--line);
+  border-radius: 999px; user-select: all; overflow-wrap: anywhere;
+}
+.btn {
+  display: inline-flex; align-items: center; gap: 8px; padding: 14px 22px; border-radius: 999px; border: 1px solid var(--line);
+  background: transparent; color: var(--ink); font: 600 0.98rem/1 var(--body); text-decoration: none; cursor: pointer;
+}
+.btn:hover { border-color: var(--ink); }
+.btn.hot { background: var(--storm); border-color: var(--storm); color: var(--night); }
+.btn.hot:hover { filter: brightness(1.08); }
+.links { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px; }
+.status { color: var(--tide); font-weight: 600; min-height: 1.4em; }
+footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; padding-block: 24px 36px; color: var(--dim); font-size: 0.9rem; }
 
-/* ---------- responsive ---------- */
-@media (max-width: 880px) {
-  .hero .wrap { grid-template-columns: minmax(0, 1fr); gap: 36px; padding-block: 40px; }
-  .project { grid-template-columns: minmax(0, 1fr); gap: 22px; }
-  .project:nth-child(even) .media { order: 0; }
-  .two { grid-template-columns: minmax(0, 1fr); gap: 40px; }
-  .loadout .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .slot:nth-child(3) { padding-left: 0; border-left: 0; }
-  .slot:nth-child(n+3) { border-top: 1px solid var(--line); }
+/* ---------- case study ---------- */
+.case { padding-top: 110px; }
+.back { display: inline-flex; gap: 8px; color: var(--dim); text-decoration: none; font-weight: 600; margin-bottom: 28px; }
+.back:hover { color: var(--ink); }
+.case h1 { font: 900 clamp(3.4rem, 11vw, 10rem)/0.86 var(--display); text-transform: uppercase; margin: 0 0 20px; }
+.case .sum { font-size: clamp(1.15rem, 2vw, 1.5rem); color: var(--dim); max-width: 40ch; margin: 0 0 36px; }
+.case .player video { width: 100%; aspect-ratio: 16 / 9; background: var(--deep); border-radius: 10px; }
+.specs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 28px 0 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.specs div { padding: 18px 16px 18px 0; min-width: 0; }
+.specs div + div { padding-left: 16px; border-left: 1px solid var(--line); }
+.specs dt { color: var(--dim); font-size: 0.9rem; }
+.specs dd { margin: 4px 0 0; font-weight: 600; }
+.case-body { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 88px); padding-block: 64px; }
+.case-body h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 18px; }
+.case-body p { color: var(--dim); max-width: 52ch; margin: 0 0 16px; }
+.systems { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 26px 32px; }
+.systems li { border-top: 2px solid var(--storm); padding-top: 12px; }
+.systems b { display: block; font: 900 1.45rem/1.05 var(--display); text-transform: uppercase; margin-bottom: 6px; }
+.systems span { color: var(--dim); font-size: 0.98rem; }
+.case-foot { display: flex; justify-content: space-between; align-items: center; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); padding-block: 32px 72px; }
+.next { text-decoration: none; text-align: right; }
+.next small { display: block; color: var(--dim); font-size: 0.9rem; }
+.next strong { font: 900 clamp(2rem, 5vw, 3.6rem)/1 var(--display); text-transform: uppercase; }
+.next:hover strong { color: var(--storm); }
+
+/* ---------- small screens ---------- */
+@media (max-width: 900px) {
+  .hero-top { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .sec-head { grid-template-columns: minmax(0, 1fr); }
+  .about, .case-body { grid-template-columns: minmax(0, 1fr); }
+  .more { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .more a:nth-child(3) { padding-left: 0; border-left: 0; }
+  .more a:nth-child(n+3) { border-top: 1px solid var(--line); }
+  .facts .wrap, .specs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fact:nth-child(3), .specs div:nth-child(3) { padding-left: 0; border-left: 0; }
+  .fact:nth-child(n+3), .specs div:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (hover: none), (max-width: 700px) {
+  .level { grid-template-columns: minmax(0, 1fr); }
+  .level .thumb { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; margin-bottom: 14px; }
+  .level .m { text-align: left; }
+  .peek { display: none; }
 }
 @media (max-width: 560px) {
-  .bar nav { gap: 14px; }
+  .stage { min-height: auto; padding-top: 84px; }
+  .systems { grid-template-columns: minmax(0, 1fr); }
   .more { grid-template-columns: minmax(0, 1fr); }
-  .more a:nth-child(even) { padding-left: 0; border-left: 0; }
-  .hud div { padding: 9px 8px; }
-  .hud dd { font-size: 0.8rem; overflow-wrap: anywhere; }
-  section.block .wrap { padding-block: 56px 16px; }
+  .more a, .more a + a { padding-left: 0; border-left: 0; border-top: 1px solid var(--line); }
+  .more a:first-child { border-top: 0; }
+  .kit div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .level .t, .peek { transition: none; }
 }
 </style>
 
 </head>
 <body>
-<header class="bar">
+<header class="nav">
   <div class="wrap">
-    <a class="mark" href="#top">Ahtesham<span>.</span>dev</a>
+    <a href="#top">Ahtesham Aslam</a>
     <nav aria-label="Sections">
       <a href="#work">Work</a>
-      <a href="#skills">Skills</a>
+      <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
   </div>
 </header>
 
-<main id="top">
-  <section class="hero">
-    <div class="wrap">
-      <div>
-        <p class="eyebrow">Game developer · UEFN &amp; Unreal Engine 5</p>
-        <h1>Ahtesham Aslam</h1>
-        <p class="lede">I build <strong>Fortnite islands in UEFN</strong> and <strong>gameplay systems in Unreal Engine 5</strong>: competitive maps, player-facing settings, wave combat and the UI that ties it together.</p>
-        <div class="actions">
-          <a class="btn primary" href="#work">See projects</a>
-          <a class="btn" href="https://github.com/ishamo91" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn" href="https://www.linkedin.com/in/ahtesham-aslam-b00544360/" target="_blank" rel="noopener">LinkedIn</a>
-        </div>
+<div id="home">
+  <section class="hero" id="top">
+    <div class="stage">
+      <div class="wrap hero-top">
+        <h1 class="name" aria-label="Ahtesham Aslam"><span class="line">Ahtesham</span><span class="line">Aslam</span></h1>
+        <p class="intro">Game developer in Islamabad. I build <strong>Fortnite islands in UEFN</strong> and <strong>gameplay systems in Unreal Engine 5</strong>.</p>
       </div>
       <figure class="reel">
-        <video src="media/reel.mp4" poster="media/reel.jpg" autoplay muted loop playsinline preload="metadata" aria-label="Showreel: clips from four projects"></video>
-        <figcaption><span class="rec">Showreel</span><span>Dead Man's Dock · 1v1 Map · Cup Zone Wars · Bot Practice</span></figcaption>
+        <div class="reel-frame">
+          <video src="media/reel.mp4" poster="media/reel.jpg" autoplay muted loop playsinline preload="auto" aria-label="Showreel with clips from four projects"></video>
+          <figcaption class="reel-cap"><span>Showreel</span><span>Dead Man's Dock, 1v1 Map, Cup Zone Wars, Bot Practice</span></figcaption>
+        </div>
       </figure>
     </div>
   </section>
 
-  <div class="loadout" aria-label="At a glance">
+  <div class="facts" aria-label="At a glance">
     <div class="wrap">
-      <div class="slot"><b>4</b><span>Featured projects</span></div>
-      <div class="slot"><b>3</b><span>UEFN islands</span></div>
-      <div class="slot"><b>10</b><span>Waves in Dead Man's Dock</span></div>
-      <div class="slot"><b>2028</b><span>BS Games Dev, Air Uni</span></div>
+      <div class="fact"><b>4</b><span>Projects with gameplay video</span></div>
+      <div class="fact"><b>3</b><span>Fortnite islands built in UEFN</span></div>
+      <div class="fact"><b>10</b><span>Enemy waves in Dead Man's Dock</span></div>
+      <div class="fact"><b>2028</b><span>Graduating, Air University</span></div>
     </div>
   </div>
 
-  <section class="block" id="work">
+  <section class="sec" id="work">
     <div class="wrap">
       <div class="sec-head">
-        <h2>Projects</h2>
-        <p>Each one has its own GitHub repo with a write-up and the full demo video.</p>
+        <h2>Select a project</h2>
+        <p>Hover a title to see it running. Open one for the full video and the systems behind it.</p>
       </div>
-
-      <div class="projects">
-        <article class="project">
-          <figure class="media">
-            <video src="media/dead-mans-dock.mp4" poster="media/dead-mans-dock-hero.jpg" controls playsinline preload="none" aria-label="Dead Man's Dock gameplay video"></video>
-          </figure>
-          <div class="info">
-            <p class="tag">Unreal Engine 5 · Wave survival FPS</p>
-            <h3>Dead Man's Dock</h3>
-            <p>Hold a pirate dock on a tropical island against ten waves of skeletons. Kills earn coins, and the shop opens between waves.</p>
-            <dl class="hud">
-              <div><dt>Engine</dt><dd>UE5</dd></div>
-              <div><dt>Waves</dt><dd>10</dd></div>
-              <div><dt>Demo</dt><dd>1:18</dd></div>
-            </dl>
-            <ul class="feats">
-              <li><b>Wave director</b> with growing enemy counts, a "Skeletons Left" tracker and a countdown between waves</li>
-              <li><b>Skeleton AI</b> that paths across beach and dock, with health bars</li>
-              <li><b>Coin economy</b> and an in-game shop on the B key</li>
-              <li><b>Menus and options:</b> Play, Options and Quit, plus graphics settings from Low to Ultra</li>
-            </ul>
-            <a class="repo" href="https://github.com/ishamo91/Dead-Mans-Dock" target="_blank" rel="noopener">View repo →</a>
-          </div>
-        </article>
-
-        <article class="project">
-          <figure class="media">
-            <video src="media/uefn-customizable-1v1-map.mp4" poster="media/uefn-customizable-1v1-map.jpg" controls playsinline preload="none" aria-label="Customizable 1v1 map gameplay video"></video>
-          </figure>
-          <div class="info">
-            <p class="tag">UEFN · Solo project</p>
-            <h3>Customizable 1v1 Build Fight Map</h3>
-            <p>A 1v1 map where players set up the whole match in-world, so they never open an island menu.</p>
-            <dl class="hud">
-              <div><dt>Engine</dt><dd>UEFN</dd></div>
-              <div><dt>HP presets</dt><dd>200/180/165</dd></div>
-              <div><dt>Demo</dt><dd>0:48</dd></div>
-            </dl>
-            <ul class="feats">
-              <li><b>Custom crosshair editor:</b> 12 styles, size, a color spectrum, presets, Random and Reset</li>
-              <li><b>Health and shield presets</b> with fine-tune sliders</li>
-              <li><b>Sky switcher, loadout wall</b> and a live round score tracker</li>
-            </ul>
-            <a class="repo" href="https://github.com/ishamo91/UEFN-Customizable-1v1-Map" target="_blank" rel="noopener">View repo →</a>
-          </div>
-        </article>
-
-        <article class="project">
-          <figure class="media">
-            <video src="media/uefn-cup-zone-wars.mp4" poster="media/uefn-cup-zone-wars.jpg" controls playsinline preload="none" aria-label="Cup Zone Wars gameplay video"></video>
-          </figure>
-          <div class="info">
-            <p class="tag">UEFN · Competitive</p>
-            <h3>Cup Zone Wars</h3>
-            <p>A zone wars experience built around a lobby hub, with cup points, a gold economy and trophies across rounds.</p>
-            <dl class="hud">
-              <div><dt>Engine</dt><dd>UEFN</dd></div>
-              <div><dt>Trophy at</dt><dd>Round 10</dd></div>
-              <div><dt>Demo</dt><dd>0:23</dd></div>
-            </dl>
-            <ul class="feats">
-              <li><b>Live leaderboard</b> and cup points for wins, placements and eliminations</li>
-              <li><b>Gold economy:</b> +5 per Victory Royale, +1 per elimination, +1 per minute</li>
-              <li><b>Loadout board</b> with a dice button that randomizes your loadout</li>
-            </ul>
-            <a class="repo" href="https://github.com/ishamo91/UEFN-Cup-Zone-Wars" target="_blank" rel="noopener">View repo →</a>
-          </div>
-        </article>
-
-        <article class="project">
-          <figure class="media">
-            <video src="media/uefn-1v1-bot-practice-map.mp4" poster="media/uefn-1v1-bot-practice-map.jpg" controls playsinline preload="none" aria-label="1v1 bot practice map gameplay video"></video>
-          </figure>
-          <div class="info">
-            <p class="tag">UEFN · Practice</p>
-            <h3>1v1 Bot Practice Map</h3>
-            <p>A solo practice island: fight a bot, swap outfits on the spot and run timed build courses.</p>
-            <dl class="hud">
-              <div><dt>Engine</dt><dd>UEFN</dd></div>
-              <div><dt>Opponent</dt><dd>AI bot</dd></div>
-              <div><dt>Demo</dt><dd>0:50</dd></div>
-            </dl>
-            <ul class="feats">
-              <li><b>1v1 Bot spawner</b> for solo build-fight practice</li>
-              <li><b>Outfit changer booth</b> that opens the locker mid-session</li>
-              <li><b>Run course</b> with a counter, a build area and build reset</li>
-            </ul>
-            <a class="repo" href="https://github.com/ishamo91/UEFN-1v1-Bot-Practice-Map" target="_blank" rel="noopener">View repo →</a>
-          </div>
-        </article>
-      </div>
+      <ul class="levels">
+        <li><a class="level" href="#dead-mans-dock" data-video="media/dead-mans-dock.mp4">
+          <img class="thumb" src="media/dead-mans-dock-hero.jpg" alt="" loading="lazy">
+          <span class="t">Dead Man's Dock</span>
+          <span class="m"><b>Unreal Engine 5</b>Wave survival shooter</span>
+        </a></li>
+        <li><a class="level" href="#cup-zone-wars" data-video="media/uefn-cup-zone-wars.mp4">
+          <img class="thumb" src="media/uefn-cup-zone-wars.jpg" alt="" loading="lazy">
+          <span class="t">Cup Zone Wars</span>
+          <span class="m"><b>UEFN</b>Competitive lobby and economy</span>
+        </a></li>
+        <li><a class="level" href="#customizable-1v1-map" data-video="media/uefn-customizable-1v1-map.mp4">
+          <img class="thumb" src="media/uefn-customizable-1v1-map.jpg" alt="" loading="lazy">
+          <span class="t">Customizable 1v1</span>
+          <span class="m"><b>UEFN, solo</b>Build fight map</span>
+        </a></li>
+        <li><a class="level" href="#bot-practice-map" data-video="media/uefn-1v1-bot-practice-map.mp4">
+          <img class="thumb" src="media/uefn-1v1-bot-practice-map.jpg" alt="" loading="lazy">
+          <span class="t">Bot Practice</span>
+          <span class="m"><b>UEFN, solo</b>1v1 against AI</span>
+        </a></li>
+      </ul>
     </div>
   </section>
 
-  <section class="block" id="more">
-    <div class="wrap">
-      <div class="sec-head">
-        <h2>More on GitHub</h2>
-        <p>Earlier engine and C++ work.</p>
+  <section class="sec" id="about">
+    <div class="wrap about">
+      <div>
+        <h2 style="margin-bottom: 28px">About</h2>
+        <p class="lead">I like building the parts players touch: <em>the rules, the scoring, the menus</em> and the moment a round starts.</p>
+        <p>I'm a Computer Games Development student at Air University in Islamabad, expected to graduate in 2028. Most of my work is in Unreal Engine 5 and UEFN, where I've built wave combat, AI enemies, in-game economies, leaderboards and player settings screens.</p>
+        <p>I'm looking for internships, part-time roles and UEFN commissions.</p>
       </div>
+      <dl class="kit">
+        <div><dt>Engines</dt><dd>Unreal Engine 5, UEFN, Fortnite Creative</dd></div>
+        <div><dt>Code</dt><dd>C++, Blueprints, SFML, Git and GitHub</dd></div>
+        <div><dt>Gameplay</dt><dd>Wave and round systems, enemy AI and navigation, economies and shops, leaderboards</dd></div>
+        <div><dt>Interface</dt><dd>UMG menus and HUDs, in-world settings panels, graphics options</dd></div>
+        <div><dt>Visuals</dt><dd>Level assembly, lighting, PBR materials, post-processing</dd></div>
+        <div><dt>Education</dt><dd>Bachelor's in Computer Games Development, Air University, 2024 to 2028</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-head"><h2>Also on GitHub</h2><p>Earlier engine and C++ work.</p></div>
       <div class="more">
-        <a href="https://github.com/ishamo91/PrismFall" target="_blank" rel="noopener"><em>C++ · SFML</em><strong>PrismFall</strong><span>A Mastermind-style puzzle game with menus, difficulty modes, sound and undo built on a stack.</span></a>
-        <a href="https://github.com/ishamo91/EnemyAI" target="_blank" rel="noopener"><em>Unreal Engine 5</em><strong>EnemyAI</strong><span>Enemy AI with waypoint patrols, plus a main menu and lose screen.</span></a>
-        <a href="https://github.com/ishamo91/Pirate-Defense-Game" target="_blank" rel="noopener"><em>Unreal Engine 5.5</em><strong>Pirate Defense Game</strong><span>An early first-person prototype in Unreal Engine 5.5.</span></a>
-        <a href="https://github.com/ishamo91/Level_Design" target="_blank" rel="noopener"><em>Unreal Engine 5</em><strong>Level Design</strong><span>Level design practice project.</span></a>
-      </div>
-    </div>
-  </section>
-
-  <section class="block" id="skills">
-    <div class="wrap two">
-      <div>
-        <div class="sec-head"><h2>Skills</h2></div>
-        <dl class="skills">
-          <div><dt>Engines</dt><dd><span class="chip">Unreal Engine 5</span><span class="chip">UEFN</span><span class="chip">Fortnite Creative</span></dd></div>
-          <div><dt>Programming</dt><dd><span class="chip">C++</span><span class="chip">Blueprints</span><span class="chip">SFML</span><span class="chip">Git &amp; GitHub</span></dd></div>
-          <div><dt>Gameplay &amp; UI</dt><dd><span class="chip">Wave &amp; round systems</span><span class="chip">Enemy AI</span><span class="chip">In-game economies</span><span class="chip">Leaderboards</span><span class="chip">UMG menus &amp; HUD</span><span class="chip">Player settings UI</span></dd></div>
-          <div><dt>Design</dt><dd><span class="chip">Competitive map layout</span><span class="chip">Level design</span><span class="chip">Playtesting</span></dd></div>
-        </dl>
-      </div>
-      <div>
-        <div class="sec-head"><h2>Education</h2></div>
-        <div class="edu">
-          <h3>Air University, Islamabad</h3>
-          <p>Bachelor's in Computer Games Development</p>
-          <p class="when">Sep 2024 – Sep 2028 (expected)</p>
-        </div>
+        <a href="https://github.com/ishamo91/PrismFall" target="_blank" rel="noopener"><small>C++ and SFML</small><strong>PrismFall</strong><span>A Mastermind-style puzzle game with menus, difficulty modes, sound and stack-based undo.</span></a>
+        <a href="https://github.com/ishamo91/EnemyAI" target="_blank" rel="noopener"><small>Unreal Engine 5</small><strong>EnemyAI</strong><span>Enemies that patrol between waypoints, with a main menu and lose screen.</span></a>
+        <a href="https://github.com/ishamo91/Pirate-Defense-Game" target="_blank" rel="noopener"><small>Unreal Engine 5.5</small><strong>Pirate Defense</strong><span>An early first-person prototype.</span></a>
+        <a href="https://github.com/ishamo91/Level_Design" target="_blank" rel="noopener"><small>Unreal Engine 5</small><strong>Level Design</strong><span>Level design practice project.</span></a>
       </div>
     </div>
   </section>
 
   <section class="contact" id="contact">
     <div class="wrap">
-      <h2>Need a map or a gameplay system built?</h2>
-      <p>I'm open to UEFN commissions, Unreal Engine work and internships. Email is the fastest way to reach me.</p>
+      <h2>Need a map or a system built?</h2>
+      <p>Email is the fastest way to reach me. I'm open to internships, part-time roles and UEFN commissions.</p>
       <div class="mail">
         <code id="email">ahteshamaslam134@gmail.com</code>
-        <button class="btn primary" type="button" id="copy-email">Copy email</button>
-        <span class="copied" id="copy-status" aria-live="polite"></span>
+        <button class="btn hot" type="button" id="copy-email">Copy email</button>
+        <span class="status" id="copy-status" aria-live="polite"></span>
       </div>
-      <div class="actions">
-        <a class="btn" href="https://github.com/ishamo91" target="_blank" rel="noopener">github.com/ishamo91</a>
+      <div class="links">
+        <a class="btn" href="https://github.com/ishamo91" target="_blank" rel="noopener">GitHub</a>
         <a class="btn" href="https://www.linkedin.com/in/ahtesham-aslam-b00544360/" target="_blank" rel="noopener">LinkedIn</a>
       </div>
     </div>
   </section>
-</main>
+</div>
+
+<!-- ================= case studies ================= -->
+<article class="case" data-route="dead-mans-dock" hidden>
+  <div class="wrap">
+    <a class="back" href="#work">← All projects</a>
+    <h1>Dead Man's Dock</h1>
+    <p class="sum">A first-person wave survival shooter. Hold a pirate dock on a tropical island against ten waves of skeletons, and spend what you earn between rounds.</p>
+    <div class="player"><video src="media/dead-mans-dock.mp4" poster="media/dead-mans-dock-hero.jpg" controls playsinline preload="none"></video></div>
+    <dl class="specs">
+      <div><dt>Engine</dt><dd>Unreal Engine 5</dd></div>
+      <div><dt>Genre</dt><dd>Wave survival FPS</dd></div>
+      <div><dt>My part</dt><dd>Gameplay, UI, level setup</dd></div>
+      <div><dt>Video</dt><dd>1 min 18 s</dd></div>
+    </dl>
+    <div class="case-body">
+      <div>
+        <h2>The game</h2>
+        <p>You start from a main menu with graphics options, then defend the dock with a pistol. Each wave sends more skeletons than the last. Between waves a countdown runs, and you can open the shop with the coins from your kills.</p>
+        <p>The island is lit for bright daylight, with docks, a pirate ship, palm trees, cannons and a plane wreck to fight around.</p>
+      </div>
+      <ul class="systems">
+        <li><b>Wave director</b><span>Ten waves, growing enemy counts, a skeletons-left tracker and a timer between waves.</span></li>
+        <li><b>Skeleton AI</b><span>Enemies path across the beach and dock toward the player, with health bars over their heads.</span></li>
+        <li><b>Coin economy</b><span>Kills pay coins, and the B key opens a shop between waves.</span></li>
+        <li><b>Combat</b><span>Pistol with a 15-round magazine, reloading and a player health bar.</span></li>
+        <li><b>Menus</b><span>Play, Options and Quit, built with UMG.</span></li>
+        <li><b>Graphics options</b><span>Low to Ultra for anti-aliasing, post-processing, textures, effects, foliage and shading.</span></li>
+      </ul>
+    </div>
+    <div class="case-foot">
+      <a class="btn hot" href="https://github.com/ishamo91/Dead-Mans-Dock" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="next" href="#cup-zone-wars"><small>Next project</small><strong>Cup Zone Wars</strong></a>
+    </div>
+  </div>
+</article>
+
+<article class="case" data-route="cup-zone-wars" hidden>
+  <div class="wrap">
+    <a class="back" href="#work">← All projects</a>
+    <h1>Cup Zone Wars</h1>
+    <p class="sum">A competitive zone wars island for Fortnite, built around a lobby hub where points, gold and trophies carry across rounds.</p>
+    <div class="player"><video src="media/uefn-cup-zone-wars.mp4" poster="media/uefn-cup-zone-wars.jpg" controls playsinline preload="none"></video></div>
+    <dl class="specs">
+      <div><dt>Engine</dt><dd>UEFN</dd></div>
+      <div><dt>Mode</dt><dd>Solo zone wars</dd></div>
+      <div><dt>My part</dt><dd>Lobby, systems, round flow</dd></div>
+      <div><dt>Video</dt><dd>23 s</dd></div>
+    </dl>
+    <div class="case-body">
+      <div>
+        <h2>The island</h2>
+        <p>Players spawn into a themed hub with rules boards, map billboards and a giant trophy. A live leaderboard tracks the session, and a loadout wall lets players pick their weapons or roll a random set.</p>
+        <p>Rounds play out on a desert map with a moving storm. After round 10, the player with the most points takes the trophy.</p>
+      </div>
+      <ul class="systems">
+        <li><b>Live leaderboard</b><span>Tracks every player's cup points across the session.</span></li>
+        <li><b>Cup points</b><span>Points for Victory Royales, placement brackets and each elimination.</span></li>
+        <li><b>Gold economy</b><span>+5 per Victory Royale, +1 per elimination and +1 per minute played.</span></li>
+        <li><b>Trophy system</b><span>Most points after round 10 earns a trophy.</span></li>
+        <li><b>Loadout board</b><span>Pick weapons from a wall, or hit the dice to randomize.</span></li>
+        <li><b>Stats HUD</b><span>Trophies, gold and points stay on screen.</span></li>
+      </ul>
+    </div>
+    <div class="case-foot">
+      <a class="btn hot" href="https://github.com/ishamo91/UEFN-Cup-Zone-Wars" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="next" href="#customizable-1v1-map"><small>Next project</small><strong>Customizable 1v1</strong></a>
+    </div>
+  </div>
+</article>
+
+<article class="case" data-route="customizable-1v1-map" hidden>
+  <div class="wrap">
+    <a class="back" href="#work">← All projects</a>
+    <h1>Customizable 1v1</h1>
+    <p class="sum">A 1v1 build fight map where players set up the whole match from inside the game, without opening a single menu.</p>
+    <div class="player"><video src="media/uefn-customizable-1v1-map.mp4" poster="media/uefn-customizable-1v1-map.jpg" controls playsinline preload="none"></video></div>
+    <dl class="specs">
+      <div><dt>Engine</dt><dd>UEFN</dd></div>
+      <div><dt>Mode</dt><dd>1v1 build fights</dd></div>
+      <div><dt>My part</dt><dd>Solo, everything</dd></div>
+      <div><dt>Video</dt><dd>48 s</dd></div>
+    </dl>
+    <div class="case-body">
+      <div>
+        <h2>The map</h2>
+        <p>Every setting lives in the world. Players walk up to panels to set health and shields, change the sky, pick a loadout or open a full crosshair editor, then go straight into the fight.</p>
+        <p>The arena has ramps, a stair course and open space for building practice.</p>
+      </div>
+      <ul class="systems">
+        <li><b>Crosshair editor</b><span>12 styles, a size slider, a full color spectrum, presets, Random and Reset.</span></li>
+        <li><b>Health presets</b><span>One-tap 200, 180 or 165, with fine-tune sliders for shield and health.</span></li>
+        <li><b>Sky switcher</b><span>Change the island's sky and mood on the fly.</span></li>
+        <li><b>Loadout wall</b><span>Weapons picked straight off a display.</span></li>
+        <li><b>Score tracker</b><span>A live scoreboard for each 1v1.</span></li>
+        <li><b>Settings sliders</b><span>In-world percentage sliders for match options.</span></li>
+      </ul>
+    </div>
+    <div class="case-foot">
+      <a class="btn hot" href="https://github.com/ishamo91/UEFN-Customizable-1v1-Map" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="next" href="#bot-practice-map"><small>Next project</small><strong>Bot Practice</strong></a>
+    </div>
+  </div>
+</article>
+
+<article class="case" data-route="bot-practice-map" hidden>
+  <div class="wrap">
+    <a class="back" href="#work">← All projects</a>
+    <h1>Bot Practice</h1>
+    <p class="sum">A solo practice island: fight an AI bot, swap outfits on the spot and run timed build courses.</p>
+    <div class="player"><video src="media/uefn-1v1-bot-practice-map.mp4" poster="media/uefn-1v1-bot-practice-map.jpg" controls playsinline preload="none"></video></div>
+    <dl class="specs">
+      <div><dt>Engine</dt><dd>UEFN</dd></div>
+      <div><dt>Mode</dt><dd>Solo practice</dd></div>
+      <div><dt>My part</dt><dd>Solo, everything</dd></div>
+      <div><dt>Video</dt><dd>50 s</dd></div>
+    </dl>
+    <div class="case-body">
+      <div>
+        <h2>The island</h2>
+        <p>Made for warming up alone. A button spawns a bot to fight, a booth opens the locker so you can change your outfit mid-session, and a stair course tracks your runs.</p>
+        <p>When the build area gets messy, one reset clears it.</p>
+      </div>
+      <ul class="systems">
+        <li><b>Bot spawner</b><span>Spawns an AI opponent for solo build fights.</span></li>
+        <li><b>Outfit booth</b><span>Walk in to open the locker and swap skins.</span></li>
+        <li><b>Run course</b><span>A stair climb with an on-screen run counter.</span></li>
+        <li><b>Build reset</b><span>Clears the practice area in one step.</span></li>
+        <li><b>Loadout wall</b><span>Weapons picked from an interactive display.</span></li>
+        <li><b>Settings panels</b><span>Health presets, sliders and score panels.</span></li>
+      </ul>
+    </div>
+    <div class="case-foot">
+      <a class="btn hot" href="https://github.com/ishamo91/UEFN-1v1-Bot-Practice-Map" target="_blank" rel="noopener">View on GitHub</a>
+      <a class="next" href="#dead-mans-dock"><small>Next project</small><strong>Dead Man's Dock</strong></a>
+    </div>
+  </div>
+</article>
 
 <footer>
   <div class="wrap">
-    <span>© 2026 Ahtesham Aslam</span>
+    <span>Ahtesham Aslam, 2026</span>
     <span>Islamabad, Pakistan</span>
   </div>
 </footer>
 
+<div class="peek" aria-hidden="true"><video muted loop playsinline preload="none"></video><span>Open project</span></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
 (function () {
-  var btn = document.getElementById('copy-email');
-  var out = document.getElementById('copy-status');
-  var email = document.getElementById('email');
-  function selectIt() {
-    var r = document.createRange(); r.selectNodeContents(email);
-    var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var wide = window.matchMedia('(min-width: 901px)').matches;
+  var hasGsap = !!(window.gsap && window.ScrollTrigger);
+  var home = document.getElementById('home');
+  var cases = Array.prototype.slice.call(document.querySelectorAll('.case'));
+  var routes = cases.map(function (c) { return c.dataset.route; });
+  var lenis = null;
+
+  /* ---- smooth scroll ---- */
+  if (window.Lenis && !reduce && finePointer) {
+    lenis = new Lenis({ lerp: 0.1 });
+    if (hasGsap) {
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function (t) { lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    } else {
+      (function loop(t) { lenis.raf(t); requestAnimationFrame(loop); })(0);
+    }
   }
+  function scrollToY(y) { if (lenis) lenis.scrollTo(y, { immediate: true }); else window.scrollTo(0, y); }
+  function scrollToEl(el) {
+    if (!el) return;
+    if (lenis) lenis.scrollTo(el, { offset: -20 });
+    else el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' });
+  }
+
+  /* ---- routing between the home page and case studies ---- */
+  function render(fromClick) {
+    var h = (location.hash || '').slice(1);
+    var isCase = routes.indexOf(h) !== -1;
+    home.hidden = isCase;
+    cases.forEach(function (c) {
+      var show = c.dataset.route === h;
+      c.hidden = !show;
+      if (!show) c.querySelectorAll('video').forEach(function (v) { v.pause(); });
+    });
+    if (isCase) {
+      scrollToY(0);
+      document.title = document.querySelector('.case[data-route="' + h + '"] h1').textContent + ' | Ahtesham Aslam';
+    } else {
+      document.title = 'Ahtesham Aslam';
+      if (h && document.getElementById(h)) {
+        requestAnimationFrame(function () { scrollToEl(document.getElementById(h)); });
+      } else if (fromClick) { scrollToY(0); }
+    }
+    if (hasGsap) ScrollTrigger.refresh();
+  }
+  window.addEventListener('hashchange', function () { render(true); });
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    var id = a.getAttribute('href').slice(1);
+    var target = document.getElementById(id);
+    if (!home.hidden && target && home.contains(target)) {
+      e.preventDefault();
+      if (id === 'top') { if (lenis) lenis.scrollTo(0); else window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' }); }
+      else scrollToEl(target);
+      return;
+    }
+    if (id === (location.hash || '').slice(1)) { e.preventDefault(); render(true); }
+  });
+  render(false);
+
+  /* ---- intro: the name rises in once ---- */
+  if (hasGsap && !reduce) {
+    document.querySelectorAll('h1.name .line').forEach(function (line) {
+      var txt = line.textContent; line.textContent = '';
+      txt.split('').forEach(function (ch) { var s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; line.appendChild(s); });
+    });
+    gsap.from('h1.name .ch', { yPercent: 110, duration: 0.9, ease: 'power4.out', stagger: 0.035, delay: 0.1 });
+    gsap.from('.intro', { opacity: 0, y: 16, duration: 0.8, ease: 'power3.out', delay: 0.6 });
+  }
+
+  /* ---- the showreel opens to full screen as you scroll ---- */
+  if (hasGsap && !reduce && wide) {
+    gsap.registerPlugin(ScrollTrigger);
+    document.documentElement.classList.add('js-pin');
+    var frame = document.querySelector('.reel-frame');
+    var tl = gsap.timeline({
+      scrollTrigger: { trigger: '.reel', start: 'top top', end: '+=110%', scrub: 0.6, pin: true, pinSpacing: true, anticipatePin: 1 }
+    });
+    tl.fromTo(frame, { clipPath: 'inset(4% 16% 18% 16% round 14px)' }, { clipPath: 'inset(0% 0% 0% 0% round 0px)', ease: 'none' })
+      .fromTo('.reel-cap', { opacity: 0 }, { opacity: 1, ease: 'none', duration: 0.3 }, 0.7);
+  }
+
+  /* ---- floating viewport over the project list ---- */
+  var peek = document.querySelector('.peek');
+  var pv = peek.querySelector('video');
+  if (finePointer) {
+    var x = innerWidth / 2, y = innerHeight / 2, px = x, py = y, active = false;
+    document.querySelectorAll('.level').forEach(function (row) {
+      row.addEventListener('mouseenter', function () {
+        var src = row.dataset.video;
+        if (pv.getAttribute('src') !== src) { pv.setAttribute('src', src); }
+        var p = pv.play(); if (p && p.catch) p.catch(function () {});
+        peek.classList.add('on'); active = true;
+      });
+      row.addEventListener('mouseleave', function () { peek.classList.remove('on'); active = false; pv.pause(); });
+    });
+    window.addEventListener('mousemove', function (e) { x = e.clientX; y = e.clientY; });
+    (function follow() {
+      var k = reduce ? 1 : 0.16;
+      px += (x - px) * k; py += (y - py) * k;
+      peek.style.transform = 'translate3d(' + (px + 24) + 'px,' + (py - 40) + 'px,0) translate(0,-50%)';
+      requestAnimationFrame(follow);
+    })();
+  }
+
+  /* ---- one video at a time ---- */
+  document.querySelectorAll('.player video').forEach(function (v) {
+    v.addEventListener('play', function () {
+      document.querySelectorAll('.player video').forEach(function (o) { if (o !== v) o.pause(); });
+    });
+  });
+
+  /* ---- copy email ---- */
+  var btn = document.getElementById('copy-email'), out = document.getElementById('copy-status'), email = document.getElementById('email');
+  function selectIt() { var r = document.createRange(); r.selectNodeContents(email); var s = getSelection(); s.removeAllRanges(); s.addRange(r); }
   btn.addEventListener('click', function () {
-    var text = email.textContent.trim();
     try {
-      navigator.clipboard.writeText(text).then(function () { out.textContent = 'Copied'; }, function () { selectIt(); out.textContent = 'Selected, press Ctrl+C'; });
-    } catch (e) { selectIt(); out.textContent = 'Selected, press Ctrl+C'; }
+      navigator.clipboard.writeText(email.textContent.trim()).then(
+        function () { out.textContent = 'Copied'; },
+        function () { selectIt(); out.textContent = 'Selected. Press Ctrl+C'; });
+    } catch (e) { selectIt(); out.textContent = 'Selected. Press Ctrl+C'; }
   });
-  // Pause other project videos when one starts playing
-  var vids = document.querySelectorAll('.media video');
-  vids.forEach(function (v) {
-    v.addEventListener('play', function () { vids.forEach(function (o) { if (o !== v) o.pause(); }); });
-  });
-  // Respect reduced motion for the hero reel
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    var reel = document.querySelector('.reel video'); if (reel) { reel.removeAttribute('autoplay'); reel.pause(); reel.controls = true; }
-  }
+
+  if (reduce) { var rv = document.querySelector('.reel video'); rv.removeAttribute('autoplay'); rv.pause(); rv.controls = true; }
 })();
 </script>
 
