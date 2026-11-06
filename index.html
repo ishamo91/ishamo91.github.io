@@ -525,6 +525,11 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
   var routes = cases.map(function (c) { return c.dataset.route; });
   var lenis = null;
 
+  /* ---- a refresh always starts at the top ---- */
+  if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+  window.addEventListener('beforeunload', function () { window.scrollTo(0, 0); });
+
   /* ---- smooth scroll ---- */
   if (window.Lenis && !reduce && finePointer) {
     lenis = new Lenis({ lerp: 0.1 });
@@ -558,7 +563,8 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
       document.title = document.querySelector('.case[data-route="' + h + '"] h1').textContent + ' | Ahtesham Aslam';
     } else {
       document.title = 'Ahtesham Aslam';
-      if (h && document.getElementById(h)) {
+      if (!fromClick) { scrollToY(0); }
+      else if (h && document.getElementById(h)) {
         requestAnimationFrame(function () { scrollToEl(document.getElementById(h)); });
       } else if (fromClick) { scrollToY(0); }
     }
@@ -579,6 +585,13 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
     if (id === (location.hash || '').slice(1)) { e.preventDefault(); render(true); }
   });
   render(false);
+  window.addEventListener('load', function () {
+    var h = (location.hash || '').slice(1);
+    if (routes.indexOf(h) === -1) {
+      if (window.ScrollTrigger && ScrollTrigger.clearScrollMemory) ScrollTrigger.clearScrollMemory('manual');
+      scrollToY(0);
+    }
+  });
 
   /* ---- intro: the name rises in once ---- */
   if (hasGsap && !reduce) {
