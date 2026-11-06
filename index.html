@@ -61,7 +61,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 /* ---------- hero ---------- */
 .hero { position: relative; background: radial-gradient(70% 55% at 78% 8%, rgba(90, 59, 140, 0.45), rgba(90, 59, 140, 0) 70%), radial-gradient(50% 45% at 0% 60%, rgba(139, 124, 199, 0.18), rgba(139, 124, 199, 0) 70%); }
 .stage { min-height: 100vh; padding-top: 96px; display: flex; flex-direction: column; justify-content: flex-start; }
-.hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); gap: 32px; align-items: end; padding-bottom: 28px; }
+.hero-top { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 26rem); gap: 32px; align-items: end; padding-bottom: 28px; }
 h1.name {
   font: 900 clamp(4.6rem, 15.5vw, 15rem)/0.8 var(--display);
   text-transform: uppercase; letter-spacing: -0.01em; margin: 0;
@@ -69,7 +69,20 @@ h1.name {
 h1.name .line { display: block; overflow: hidden; padding-bottom: 0.04em; white-space: nowrap; }
 h1.name .ch { display: inline-block; will-change: transform; }
 h1.name .line:last-child { color: transparent; -webkit-text-stroke: 2px var(--ink); }
-.intro { margin: 0 0 0.6em; font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--dim); max-width: 22rem; }
+.hero-side { display: grid; gap: 18px; align-content: end; padding-bottom: 0.6em; min-width: 0; }
+.intro { margin: 0; font-size: clamp(1.05rem, 1.5vw, 1.25rem); color: var(--dim); max-width: 24rem; }
+.avail { margin: 0; display: inline-flex; align-items: center; gap: 10px; justify-self: start; padding: 7px 14px 7px 12px; border-radius: 999px;
+  border: 1px solid var(--line); background: rgba(42, 30, 77, 0.6); color: var(--dim); font-size: 0.9rem; font-weight: 500; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: var(--storm); box-shadow: 0 0 0 0 rgba(139, 124, 199, 0.7); animation: pulse 2s ease-out infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 9px rgba(139, 124, 199, 0); } 100% { box-shadow: 0 0 0 0 rgba(139, 124, 199, 0); } }
+.hero-links { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn.ic svg { width: 17px; height: 17px; fill: currentColor; flex: none; }
+.btn.ic:hover { background: var(--deep); border-color: var(--storm); }
+.nav nav { align-items: center; }
+.nav-sep { width: 1px; height: 16px; background: var(--line); }
+.nav .nav-ic { display: inline-grid; place-items: center; width: 34px; height: 34px; margin: -8px 0; border-radius: 50%; opacity: 0.85; transition: background 0.2s ease, opacity 0.2s ease; }
+.nav .nav-ic svg { width: 17px; height: 17px; fill: currentColor; }
+.nav .nav-ic:hover { opacity: 1; background: var(--deep); text-decoration: none; }
 .intro strong { color: var(--ink); font-weight: 600; }
 .reel { margin: 0; position: relative; padding-left: calc(var(--gutter) + 1.5vw); padding-right: calc(var(--gutter-r) + 1.5vw); }
 .reel-frame { position: relative; overflow: hidden; border-radius: 10px; background: var(--deep); }
@@ -82,7 +95,7 @@ h1.name .line:last-child { color: transparent; -webkit-text-stroke: 2px var(--in
 .reel-cap span:first-child::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--storm); margin-right: 9px; vertical-align: 1px; }
 .js-pin .reel { padding: 0; }
 .js-pin .reel-frame { border-radius: 0; }
-.js-pin .reel video { max-height: none; height: 100vh; aspect-ratio: auto; }
+.js-pin .reel video { max-height: none; height: 100vh; height: 100svh; aspect-ratio: auto; }
 
 /* ---------- facts strip ---------- */
 .facts { border-bottom: 1px solid var(--line); }
@@ -209,6 +222,8 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
   .peek { display: none; }
 }
 @media (max-width: 560px) {
+  .nav > .wrap > a { display: none; }
+  .nav nav { margin-left: auto; gap: 16px; }
   .stage { min-height: auto; padding-top: 84px; }
   .systems { grid-template-columns: minmax(0, 1fr); }
   .more { grid-template-columns: minmax(0, 1fr); }
@@ -217,6 +232,7 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
   .kit div { grid-template-columns: minmax(0, 1fr); gap: 4px; }
 }
 @media (prefers-reduced-motion: reduce) {
+  .pulse { animation: none; }
   .level .t, .peek { transition: none; }
 }
 </style>
@@ -230,6 +246,9 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
       <a href="#work">Work</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
+      <span class="nav-sep" aria-hidden="true"></span>
+      <a class="nav-ic" href="https://github.com/ishamo91" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
+      <a class="nav-ic" href="https://www.linkedin.com/in/ahtesham-aslam-b00544360/" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 01.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg></a>
     </nav>
   </div>
 </header>
@@ -239,7 +258,15 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
     <div class="stage">
       <div class="wrap hero-top">
         <h1 class="name" aria-label="Ahtesham Aslam"><span class="line">Ahtesham</span><span class="line">Aslam</span></h1>
-        <p class="intro">Game developer in Islamabad. I build <strong>Fortnite islands in UEFN</strong> and <strong>gameplay systems in Unreal Engine 5</strong>.</p>
+        <div class="hero-side">
+          <p class="avail"><span class="pulse" aria-hidden="true"></span>Open to internships and UEFN commissions</p>
+          <p class="intro">Game developer in Islamabad. I build <strong>Fortnite islands in UEFN</strong> and <strong>gameplay systems in Unreal Engine 5</strong>.</p>
+          <div class="hero-links">
+            <a class="btn hot" href="#work">See projects</a>
+            <a class="btn ic" href="https://github.com/ishamo91" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>GitHub</a>
+            <a class="btn ic" href="https://www.linkedin.com/in/ahtesham-aslam-b00544360/" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 01.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>LinkedIn</a>
+          </div>
+        </div>
       </div>
       <figure class="reel">
         <div class="reel-frame">
@@ -560,7 +587,7 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
       txt.split('').forEach(function (ch) { var s = document.createElement('span'); s.className = 'ch'; s.textContent = ch; line.appendChild(s); });
     });
     gsap.from('h1.name .ch', { yPercent: 110, duration: 0.9, ease: 'power4.out', stagger: 0.035, delay: 0.1 });
-    gsap.from('.intro', { opacity: 0, y: 16, duration: 0.8, ease: 'power3.out', delay: 0.6 });
+    gsap.from('.hero-side > *', { opacity: 0, y: 16, duration: 0.8, ease: 'power3.out', delay: 0.55, stagger: 0.08 });
   }
 
   /* ---- keep the giant name inside its column, even if the font fails to load ---- */
@@ -576,8 +603,9 @@ footer .wrap { border-top: 1px solid var(--line); display: flex; justify-content
   window.addEventListener('resize', fitName);
 
   /* ---- the showreel opens to full screen as you scroll ---- */
-  if (hasGsap && !reduce && wide) {
+  if (hasGsap && !reduce) {
     gsap.registerPlugin(ScrollTrigger);
+    ScrollTrigger.config({ ignoreMobileResize: true });
     document.documentElement.classList.add('js-pin');
     var frame = document.querySelector('.reel-frame');
     var tl = gsap.timeline({
